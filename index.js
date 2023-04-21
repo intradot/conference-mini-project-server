@@ -1,4 +1,4 @@
-// Import the necessary modules
+// Import the necessary modules 
 const express = require('express');
 const http = require('http');
 const socketIO = require('socket.io');
@@ -33,7 +33,7 @@ io.on('connection', (socket) => {
     socket.on('join-lecture', (data) => {
         console.log('Joined', data);
     });
-    
+
     // Handle the disconnect event
     socket.on('disconnect', () => {
         console.log('A client has disconnected');
