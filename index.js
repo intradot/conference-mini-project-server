@@ -30,13 +30,20 @@ const io = socketIO(server, {
 io.on('connection', (socket) => {
     console.log('A client has connected');
 
-    socket.on('join-lecture', (data) => {
-        console.log('Joined', data);
+    socket.on('join-lecture', (lectureId, userId) => {
+        console.log('Joined', lectureId, userId);
+        socket.join(lectureId);
+        //socket.to(lectureId).emit('user-connected', userId);
+        socket.broadcast.to(lectureId).emit("user-connected", userId);
+        socket.on('disconnect', () => {
+            socket.broadcast.to(lectureId).emit("user-disconnected", userId);
+        });
     });
 
     // Handle the disconnect event
     socket.on('disconnect', () => {
         console.log('A client has disconnected');
+        socket.broadcast.emit('clear-grid');
     });
 });
 
