@@ -40,6 +40,15 @@ io.on('connection', (socket) => {
         });
     });
 
+    socket.on('share-screen', (lectureId, stream) => {
+        console.log('share-screen', lectureId, stream);
+        
+        socket.broadcast.to(lectureId).emit("user-share-screen", stream);
+        socket.on('disconnect', () => {
+            socket.broadcast.to(lectureId).emit("user-unshare-screen", stream);
+        });
+    });
+
     // Handle the disconnect event
     socket.on('disconnect', () => {
         console.log('A client has disconnected');
